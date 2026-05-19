@@ -1,0 +1,60 @@
+name: Rebuild Master Index on Lark
+
+on:
+  workflow_dispatch:                            # button "Run workflow"
+  schedule:
+    - cron: '0 2 * * 1'                         # mỗi thứ 2, 2h UTC
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    # Opt-in: chỉ chạy khi vars.LARK_INTEGRATION_ENABLED == 'true'
+    if: vars.LARK_INTEGRATION_ENABLED == 'true'
+    environment: production                     # GitHub Environment với required reviewers (recommended)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r scripts/requirements.txt
+
+      - name: Install lark-cli
+        uses: ./.github/actions/setup-lark-cli
+        with:
+          min-version: '1.0.30'
+
+      - name: Auth lark-cli as bot
+        env:
+          LARK_APP_ID: ${{ secrets.LARK_APP_ID }}
+          LARK_APP_SECRET: ${{ secrets.LARK_APP_SECRET }}
+        run: |
+          if [ -z "$LARK_APP_ID" ] || [ -z "$LARK_APP_SECRET" ]; then
+            echo "❌ LARK_APP_ID hoặc LARK_APP_SECRET secret chưa set"
+            exit 1
+          fi
+          # lark-cli bot auth (specific syntax tùy version, here pseudocode)
+          lark-cli auth login --as bot --app-id "$LARK_APP_ID" --app-secret "$LARK_APP_SECRET" || \
+            { echo "Auth syntax may need adjustment — xem lark-cli docs"; exit 1; }
+
+      - name: Decrypt company.config.yaml
+        run: |
+          if [ -z "${{ secrets.COMPANY_CONFIG_B64 }}" ]; then
+            echo "❌ COMPANY_CONFIG_B64 secret chưa set (base64 of company.config.yaml)"
+            exit 1
+          fi
+          echo "${{ secrets.COMPANY_CONFIG_B64 }}" | base64 -d > company.config.yaml
+          python3 scripts/validate_config.py --strict
+
+      - name: Render + rebuild Master Index
+        run: |
+          python3 scripts/render.py
+          python3 scripts/rebuild_master_index.py --confirm
+
+      - name: Notify (optional)
+        if: failure()
+        run: |
+          echo "⚠️  Workflow failed. Check logs above."
+          # TODO: lark-cli im message send to admin channel
