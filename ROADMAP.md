@@ -1,18 +1,20 @@
 # Roadmap
 
-## v1.0 — Public release (target: Q3 2026)
+## v1.0 — Public release ✅ DONE (2026-05-19)
 
 - [x] Spec đã duyệt — xem `docs/superpowers/specs/2026-05-19-wko-public-template-design.md`
 - [x] Implementation plan — xem `docs/superpowers/plans/2026-05-19-wko-public-template-implementation.md`
-- [ ] Bootstrap repo (M1)
-- [ ] Config schema V4.1 + validator (M2)
-- [ ] Render engine + tests (M3) → tag `v0.1.0-alpha`
-- [ ] 12 skills templated (M4)
-- [ ] 11 docs templated (M5) → tag `v0.5.0-beta`
-- [ ] 17 scripts (M6)
-- [ ] 7 CI workflows (M7) → tag `v0.9.0-rc`
-- [ ] 3 examples + 4 docs-meta (M8)
-- [ ] Release v1.0 (M9) → tag `v1.0.0`
+- [x] Bootstrap repo (M1)
+- [x] Config schema V4.1 + validator (M2)
+- [x] Render engine + tests (M3) → tag `v0.1.0-alpha`
+- [x] 12 skills templated (M4)
+- [x] 11 docs templated (M5) → tag `v0.5.0-beta`
+- [x] 17 scripts (M6)
+- [x] 7 CI workflows (M7) → tag `v0.9.0-rc`
+- [x] 3 examples + 4 docs-meta (M8)
+- [x] Release v1.0 (M9) → tag **`v1.0.0`**
+
+🎉 **Stats:** 47 commits, 94 tests, 43% coverage, 23 source files, 17 scripts, 7 CI workflows.
 
 ## v1.1 — Quality of life (Q4 2026)
 
