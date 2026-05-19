@@ -19,19 +19,19 @@ Nếu page chỉ trả lời "cái này là gì" → cân nhắc xem có cần t
 {% for t in taxonomy.page_types %}
 ### {{ t.code }} — {{ t.name }}
 
-{% if t.question %}**Câu hỏi thực thi:** _{{ t.question }}_{% endif %}
+{% if t.get("question") %}**Câu hỏi thực thi:** _{{ t.question }}_{% endif %}
 
-{% if t.scope %}**Scope:** `{{ t.scope }}`{% endif %}
+{% if t.get("scope") %}**Scope:** `{{ t.scope }}`{% endif %}
 
-{% if t.sub_types %}**Sub-types:** {{ t.sub_types | join(", ") }}{% endif %}
+{% if t.get("sub_types") %}**Sub-types:** {{ t.sub_types | join(", ") }}{% endif %}
 
-{% if t.condition %}**Điều kiện tạo:** {{ t.condition }}{% endif %}
+{% if t.get("condition") %}**Điều kiện tạo:** {{ t.condition }}{% endif %}
 
-{% if t.mandatory_per_section %}> ⚠️ **Bắt buộc** mỗi section có 1 {{ t.code }}.{% endif %}
+{% if t.get("mandatory_per_section") %}> ⚠️ **Bắt buộc** mỗi section có 1 {{ t.code }}.{% endif %}
 
-{% if t.requires_real_data %}> ⚠️ Chỉ tạo khi có **source số liệu thật**.{% endif %}
+{% if t.get("requires_real_data") %}> ⚠️ Chỉ tạo khi có **source số liệu thật**.{% endif %}
 
-{% if t.new_in_v41 %}> 🆕 **Mới trong V{{ taxonomy.version | replace("v", "") }}**{% endif %}
+{% if t.get("new_in_v41") %}> 🆕 **Mới trong V{{ taxonomy.version | replace("v", "") }}**{% endif %}
 
 {% endfor %}
 
