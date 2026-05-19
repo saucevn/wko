@@ -8,7 +8,7 @@ jinja2>=3.1           # render engine — import name: `jinja2`
 
 # AI bot (chỉ wiki_reviewer_bot.py)
 anthropic>=0.40
-python-dotenv>=1.0
+python-dotenv>=1.2.2
 
 # Dev tools (watch mode, tests)
 pytest>=8.0
