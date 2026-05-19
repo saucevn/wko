@@ -24,14 +24,16 @@
 
 ### Lark group đề xuất
 
+{% raw %}
 <!-- TODO: tạo Lark group + add member, list ở đây.
 
 Đề xuất:
-- @wiki-editor-{{ space.code | lower }}      — editor cho từng space
-- @wiki-viewer-all                            — viewer toàn wiki (default cho all employees)
-- @wiki-admin                                  — admin (move/archive/permission change)
-- @bod-only                                    — restricted BOD content
+- @wiki-editor-<space>     — editor cho từng space (vd @wiki-editor-ops)
+- @wiki-viewer-all         — viewer toàn wiki (default cho all employees)
+- @wiki-admin              — admin (move/archive/permission change)
+- @bod-only                — restricted BOD content
 -->
+{% endraw %}
 
 ## Quy trình cấp / thu hồi quyền
 
