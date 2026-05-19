@@ -1,0 +1,52 @@
+name: 'Setup lark-cli'
+description: 'Install lark-cli binary + verify version (Linux runners)'
+
+inputs:
+  version:
+    description: 'lark-cli version tag (default: latest)'
+    required: false
+    default: 'latest'
+  min-version:
+    description: 'Minimum required version (default: 1.0.30)'
+    required: false
+    default: '1.0.30'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install lark-cli
+      shell: bash
+      run: |
+        VER="${{ inputs.version }}"
+        if [ "$VER" = "latest" ]; then
+          URL=$(curl -fsSL https://api.github.com/repos/larksuite/lark-cli/releases/latest \
+                | grep '"browser_download_url"' \
+                | grep -i 'linux-x64\|linux_x64\|linux-amd64' \
+                | head -1 \
+                | cut -d'"' -f4)
+        else
+          # Allow user override via explicit URL
+          URL="https://github.com/larksuite/lark-cli/releases/download/${VER}/lark-cli-linux-x64.tar.gz"
+        fi
+        if [ -z "$URL" ]; then
+          echo "❌ Could not resolve lark-cli release URL"
+          exit 1
+        fi
+        echo "📦 Downloading $URL"
+        curl -fsSL "$URL" -o /tmp/lark-cli.tar.gz
+        sudo tar -xzf /tmp/lark-cli.tar.gz -C /usr/local/bin
+        chmod +x /usr/local/bin/lark-cli || true
+        rm -f /tmp/lark-cli.tar.gz
+
+    - name: Verify lark-cli
+      shell: bash
+      run: |
+        INSTALLED=$(lark-cli --version | awk '{print $NF}')
+        MIN="${{ inputs.min-version }}"
+        echo "Installed: $INSTALLED, Required: ≥ $MIN"
+        # Pure-bash version compare
+        if ! printf '%s\n%s' "$MIN" "$INSTALLED" | sort -V -C; then
+          echo "❌ Version $INSTALLED is below required $MIN"
+          exit 1
+        fi
+        echo "✅ lark-cli ready"
