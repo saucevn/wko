@@ -60,6 +60,33 @@ def sample_config() -> dict[str, Any]:
             },
             "page_code_format": "{space}-{section_suffix}-{type}-{number:03d}",
         },
+        "hub_rules": {
+            "master_hub_number": "001",
+            "branch_hub_min_pages": 3,
+            "branch_patterns": [
+                {"name": "A — sub-area", "example": "vd kênh bán"},
+                {"name": "B — audience", "example": "vd PIM cho team"},
+            ],
+            "hub_parent_required": True,
+        },
+        "execution_first": {
+            "enforce": True,
+            "section_formula": {
+                "required": ["1 HUB", "1-2 MST", "1 PROC", "3-5 SOP", "1 CHK", "1 TMP", "1 PBK"],
+                "optional_when_needed": ["0-1 DBD"],
+            },
+            "page_purpose_questions": ["Tôi đang ở đâu? → HUB"],
+            "rejection_rules": ["Vì nên có"],
+        },
+        "pol_mst_rules": {
+            "pol_scope": "external_only",
+            "mst_types": ["bridge", "standalone"],
+            "pol_primary_owner_per_section": True,
+            "primary_owner_table": {"TikTok policy": "OPS-ECM"},
+            "pol_required_sections": 8,
+            "mst_bridge_required_sections": 5,
+            "cross_section_rule": "link, không copy",
+        },
         "org": {"departments": [{"code": "HCNS", "name": "HCNS"}]},
         "master_registry": [
             {"code": "SYS-00-MST-001", "name": "Master Registry", "owner": "Admin"}
