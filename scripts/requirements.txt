@@ -3,7 +3,7 @@
 # Xem README §⚠️ Yêu cầu bắt buộc.
 
 # Core (mọi script)
-PyYAML>=6.0           # config parser — import name: `yaml` (package name PyYAML/pyyaml đều OK)
+PyYAML>=6.0.3           # config parser — import name: `yaml` (package name PyYAML/pyyaml đều OK)
 jinja2>=3.1           # render engine — import name: `jinja2`
 
 # AI bot (chỉ wiki_reviewer_bot.py)
