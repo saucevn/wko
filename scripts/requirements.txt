@@ -1,0 +1,16 @@
+# ⚠️ HARD REQUIREMENT: lark-cli phải được cài SẴN ở system level.
+# Repo này không tự cài lark-cli (Python pip không quản binary).
+# Xem README §⚠️ Yêu cầu bắt buộc.
+
+# Core (mọi script)
+PyYAML>=6.0
+jinja2>=3.1
+
+# AI bot (chỉ wiki_reviewer_bot.py)
+anthropic>=0.40
+python-dotenv>=1.0
+
+# Dev tools (watch mode, tests)
+pytest>=8.0
+pytest-cov>=5.0
+watchdog>=4.0
