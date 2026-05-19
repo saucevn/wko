@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets — NEVER commit
+.env
+.env.local
+company.config.yaml
+
+# Build output
+dist/
+build/
+
+# Drafts (gitignored — viết draft ngoài repo hoặc đây)
+drafts/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Logs
+*.log
+
+# Local lark-cli cache
+.lark-cli/
