@@ -2,6 +2,7 @@
 
 Simulate fresh client: copy example config → validate → render → verify dist/.
 """
+
 from __future__ import annotations
 
 import shutil
@@ -10,7 +11,6 @@ import sys
 from pathlib import Path
 
 import pytest
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 EXAMPLE_NAMES = [
@@ -83,7 +83,9 @@ def test_e2e_validate_and_render(fresh_workspace: Path, example_name: str) -> No
 
     # Spot-check: rendered content không còn placeholder
     arch_doc = (dist / "docs" / "02-wiki-architecture.md").read_text()
-    assert "{{ " not in arch_doc, f"Unrendered placeholder in {example_name}/02-wiki-architecture.md"
+    assert (
+        "{{ " not in arch_doc
+    ), f"Unrendered placeholder in {example_name}/02-wiki-architecture.md"
     assert "{% " not in arch_doc, f"Unrendered Jinja2 in {example_name}/02-wiki-architecture.md"
 
 
