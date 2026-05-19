@@ -1,0 +1,150 @@
+# Example: Minimal 3-SPACE — Tối giản
+# Mô phỏng: solo founder / freelancer / project nhỏ < 10 người
+# Chỉ 3 SPACE (SYS / OPS / ARC), không có HR/Finance/BOD riêng
+
+company:
+  name: "Minimal Co"
+  short_name: "Min"
+  industry: "Generic"
+  hq_country: "VN"
+  legal_entities:
+    - "Minimal Co"
+
+lark:
+  domain: "larksuite.com"
+  tenant_subdomain: "minimal"
+  region: "sg"
+  wiki_root_token: "Yix7wqEXAMPLE123MIN"
+  wiki_root_url: "https://minimal.sg.larksuite.com/wiki/Yix7wqEXAMPLE123MIN"
+  master_index:
+    node_token: "UxOkEXAMPLE123MIN"
+    obj_token: "Vy3REXAMPLE123MIN"
+
+taxonomy:
+  version: "v4.1"
+  philosophy: "execution-first"
+
+  # 3 SPACE tối giản
+  spaces:
+    - { code: SYS, name: "Wiki OS", order: "00", icon: "⚙️", owner: "Owner" }
+    - { code: OPS, name: "Operations (mọi vận hành)", order: "01", icon: "⚡", owner: "Owner" }
+    - { code: ARC, name: "Archive", order: "99", icon: "🗄", owner: "Owner", append_only: true }
+
+  page_types:
+    - { code: HUB, name: "Hub", question: "Tôi đang ở đâu?", mandatory_per_section: true }
+    - { code: MST, name: "Master", question: "Luật gốc?", sub_types: [bridge, standalone] }
+    - { code: PROC, name: "Process", question: "Ai làm khi nào?", new_in_v41: true }
+    - { code: SOP, name: "SOP", question: "Từng bước gì?" }
+    - { code: CHK, name: "Checklist", question: "Đã làm đủ?" }
+    - { code: TMP, name: "Template", question: "Mẫu nào?" }
+    - { code: PBK, name: "Playbook", question: "Lệch / lỗi?" }
+    - { code: DBD, name: "Dashboard", question: "Số ổn?", requires_real_data: true }
+    - { code: POL, name: "Policy", scope: "external_only", mandatory_sections: 8 }
+    - { code: DIC, name: "Dictionary" }
+    - { code: GDL, name: "Guideline", new_in_v41: true }
+    - { code: LOG, name: "Log" }
+    - { code: IDX, name: "Index" }
+
+  sections:
+    SYS:
+      - { code: "SYS-00", name: "Wiki OS" }
+    OPS:
+      - { code: "OPS-MAIN", name: "Vận hành chung" }
+      - { code: "OPS-CLIENT", name: "Khách hàng / dự án" }
+      - { code: "OPS-FIN", name: "Tài chính cá nhân/công ty" }
+    ARC:
+      - { code: "ARC-OLD", name: "Lưu trữ" }
+
+  page_code_format: "{space}-{section_suffix}-{type}-{number:03d}"
+
+hub_rules:
+  master_hub_number: "001"
+  branch_hub_min_pages: 3
+  branch_patterns:
+    - { name: "A — sub-area", example: "OPS-CLIENT với HUB per client" }
+    - { name: "C — lifecycle", example: "OPS-MAIN với HUB Daily/Weekly/Monthly" }
+  hub_parent_required: true
+
+execution_first:
+  enforce: true
+  section_formula:
+    required: ["1 HUB", "1-2 MST", "1 PROC", "3-5 SOP", "1 CHK", "1 TMP", "1 PBK"]
+    optional_when_needed:
+      - "0-1 DBD"
+      - "0-1 DIC"
+      - "0-1 GDL"
+      - "0-1 POL"
+  page_purpose_questions:
+    - "Đang ở đâu? → HUB"
+    - "Ai làm? → PROC"
+    - "Từng bước? → SOP"
+    - "Đủ chưa? → CHK"
+    - "Mẫu? → TMP"
+    - "Lỗi? → PBK"
+    - "Số? → DBD"
+    - "Luật gốc? → MST"
+  rejection_rules:
+    - "Vì nên có (không cần thiết)"
+    - "DIC không gây sai thao tác"
+    - "GDL không ảnh hưởng hành vi"
+    - "DBD không có data thật"
+
+pol_mst_rules:
+  pol_scope: "external_only"
+  mst_types: [bridge, standalone]
+  pol_primary_owner_per_section: true
+  primary_owner_table:
+    "Luật Thuế cá nhân / hộ kinh doanh": "OPS-FIN"
+    "Sàn / platform terms (nếu có)": "OPS-CLIENT"
+  pol_required_sections: 8
+  mst_bridge_required_sections: 5
+  cross_section_rule: "link, không copy"
+
+org:
+  departments:
+    - { code: ALL, name: "All (1-N người làm tất)", head_role: "Owner" }
+
+master_registry:
+  - { code: "SYS-00-MST-001", name: "Master Registry", owner: "Owner", required: true }
+  - { code: "OPS-MAIN-MST-001", name: "MASTER quy trình daily", owner: "Owner", required: true }
+  - { code: "OPS-CLIENT-MST-001", name: "MASTER client onboarding", owner: "Owner", required: true }
+  - { code: "OPS-FIN-MST-001", name: "MASTER thu chi", owner: "Owner", required: true }
+
+integrations:
+  contributor_group_email: "wiki@minimal.com"
+  reviewer_bot_webhook: ""
+  reviewer_bot_name: "@minimal-bot"
+  contributor_group_chat_id: ""
+
+lark_bases:
+  - { name: "Daily Log", base_token: "bascnMIN001", purpose: "Log công việc + thu chi hàng ngày" }
+  - { name: "Client Tracker", base_token: "bascnMIN002", purpose: "Active clients + deliverables" }
+
+master_index_fields:
+  required:
+    - "Page Code"
+    - "Page Name"
+    - "Space"
+    - "Section"
+    - "Type"
+    - "Hub Parent"
+    - "Owner"
+    - "Reviewer"
+    - "Status"
+    - "Version"
+    - "Security Level"
+    - "Link"
+  recommended:
+    - "Source Type"
+    - "Source URL"
+    - "Effective Date"
+    - "Review Cadence"
+    - "Impacted Pages"
+
+policies:
+  page_status_values: ["⬜ Draft", "🔄 Active", "📋 Deprecated", "✅ Archived"]
+  default_status: "⬜ Draft"
+  publish_requires_review: false
+  review_quorum: 0
+  arc_append_only: true
+  no_renumber_on_rename: true

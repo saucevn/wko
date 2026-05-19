@@ -1,0 +1,190 @@
+# Example: Tech Startup Singapore — SaaS B2B công ty hư cấu
+# Mô phỏng: ~20 nhân viên, không e-commerce, không sản xuất
+# Custom 4-SPACE taxonomy (loại bỏ OPS commerce-heavy, thêm ENG + GTM)
+
+company:
+  name: "Acme Cloud"
+  short_name: "Acme"
+  industry: "SaaS B2B / DevOps"
+  founded_year: 2024
+  hq_country: "SG"
+  legal_entities:
+    - "Acme Cloud Pte Ltd"
+
+lark:
+  domain: "larksuite.com"
+  tenant_subdomain: "acme-cloud"
+  region: "sg"
+  wiki_root_token: "Yix7wqEXAMPLE123CLOUD"
+  wiki_root_url: "https://acme-cloud.sg.larksuite.com/wiki/Yix7wqEXAMPLE123CLOUD"
+  master_index:
+    node_token: "UxOkEXAMPLE123CLOUD"
+    obj_token: "Vy3REXAMPLE123CLOUD"
+
+taxonomy:
+  version: "v4.1"
+  philosophy: "execution-first"
+
+  # 5 SPACE custom — bỏ OPS commerce-heavy, gộp INT vào GEN, thêm ENG + GTM
+  spaces:
+    - { code: SYS, name: "Wiki Operating System", order: "00", icon: "⚙️", owner: "IT" }
+    - { code: GEN, name: "Company / General", order: "01", icon: "🏢", owner: "Founder + Ops" }
+    - { code: ENG, name: "Engineering", order: "02", icon: "💻", owner: "CTO" }
+    - { code: GTM, name: "Go-to-market", order: "03", icon: "🚀", owner: "Head of Growth" }
+    - { code: BOD, name: "Founders", order: "04", icon: "👔", owner: "Founders" }
+    - { code: ARC, name: "Archive", order: "99", icon: "🗄", owner: "Ops", append_only: true }
+
+  page_types:
+    - { code: HUB, name: "Hub", question: "Tôi đang ở đâu trong luồng?", mandatory_per_section: true }
+    - { code: MST, name: "Master", question: "Luật gốc / dữ liệu gốc là gì?", sub_types: [bridge, standalone] }
+    - { code: PROC, name: "Process", question: "Ai làm, làm khi nào?", new_in_v41: true }
+    - { code: SOP, name: "SOP", question: "Tôi phải làm từng bước gì?" }
+    - { code: CHK, name: "Checklist", question: "Tôi đã làm đủ chưa?" }
+    - { code: TMP, name: "Template", question: "Tôi dùng mẫu nào?" }
+    - { code: PBK, name: "Playbook", question: "Lệch / lỗi / có nhánh?" }
+    - { code: DBD, name: "Dashboard", question: "Kết quả có ổn không?", requires_real_data: true }
+    - { code: POL, name: "Policy", scope: "external_only", mandatory_sections: 8 }
+    - { code: DIC, name: "Dictionary" }
+    - { code: GDL, name: "Guideline", new_in_v41: true }
+    - { code: LOG, name: "Log" }
+    - { code: IDX, name: "Index" }
+
+  sections:
+    SYS:
+      - { code: "SYS-00", name: "Wiki Operating System" }
+    GEN:
+      - { code: "GEN-01", name: "Company basics" }
+      - { code: "GEN-02", name: "Onboarding" }
+      - { code: "GEN-03", name: "Tools & systems" }
+      - { code: "GEN-HR", name: "People ops" }
+      - { code: "GEN-FIN", name: "Finance & legal" }
+    ENG:
+      - { code: "ENG-ARCH", name: "Architecture" }
+      - { code: "ENG-PROD", name: "Product engineering" }
+      - { code: "ENG-INFRA", name: "Infrastructure & DevOps" }
+      - { code: "ENG-SEC", name: "Security" }
+      - { code: "ENG-QA", name: "Quality & testing" }
+      - { code: "ENG-INCIDENT", name: "Incident response" }
+    GTM:
+      - { code: "GTM-MKT", name: "Marketing" }
+      - { code: "GTM-SALES", name: "Sales" }
+      - { code: "GTM-CS", name: "Customer Success" }
+      - { code: "GTM-PARTNER", name: "Partnerships" }
+    BOD:
+      - { code: "BOD-STR", name: "Strategy" }
+      - { code: "BOD-GOV", name: "Governance" }
+    ARC:
+      - { code: "ARC-OLD", name: "Archived docs" }
+
+  page_code_format: "{space}-{section_suffix}-{type}-{number:03d}"
+
+hub_rules:
+  master_hub_number: "001"
+  branch_hub_min_pages: 3
+  branch_patterns:
+    - { name: "A — sub-area", example: "ENG-INFRA với HUB AWS / GCP / On-prem" }
+    - { name: "B — audience", example: "GEN-03 Tools với HUB cho Eng/Sales/Ops" }
+    - { name: "C — lifecycle/phase", example: "GTM-SALES với HUB Discovery/POC/Close" }
+    - { name: "D — role", example: "ENG-INCIDENT với HUB On-call/Lead/Postmortem" }
+  hub_parent_required: true
+
+execution_first:
+  enforce: true
+  section_formula:
+    required: ["1 HUB", "1-2 MST", "1 PROC", "3-5 SOP", "1 CHK", "1 TMP", "1 PBK"]
+    optional_when_needed:
+      - "0-1 DBD (chỉ khi có số liệu thật)"
+      - "0-1 DIC (chỉ khi thuật ngữ gây sai thao tác)"
+      - "0-1 GDL (chỉ khi ảnh hưởng hành vi)"
+      - "0-1 POL (chỉ external)"
+  page_purpose_questions:
+    - "Tôi đang ở đâu trong luồng? → HUB"
+    - "Ai làm, làm khi nào? → PROC"
+    - "Tôi phải làm từng bước gì? → SOP"
+    - "Tôi đã làm đủ chưa? → CHK"
+    - "Tôi dùng mẫu nào? → TMP"
+    - "Lệch / lỗi / có nhánh? → PBK"
+    - "Kết quả có ổn không? → DBD"
+    - "Luật gốc / dữ liệu gốc? → MST"
+  rejection_rules:
+    - "Vì nên có (không phục vụ thực thi cụ thể)"
+    - "DIC mà thuật ngữ không gây sai thao tác"
+    - "GDL mà guideline không ảnh hưởng cách làm"
+    - "DBD mà chưa có source số liệu thật"
+
+pol_mst_rules:
+  pol_scope: "external_only"
+  mst_types: [bridge, standalone]
+  pol_primary_owner_per_section: true
+  primary_owner_table:
+    "GDPR / Singapore PDPA": "BOD-GOV"
+    "SOC 2 / ISO 27001 compliance": "ENG-SEC"
+    "AWS / GCP terms": "ENG-INFRA"
+    "Singapore employment law": "GEN-HR"
+    "GST / Tax (Singapore)": "GEN-FIN"
+    "Stripe / payment processor terms": "GEN-FIN"
+  pol_required_sections: 8
+  mst_bridge_required_sections: 5
+  cross_section_rule: "link, không copy"
+
+org:
+  departments:
+    - { code: ENG, name: "Engineering", head_role: "CTO" }
+    - { code: GROW, name: "Growth (marketing + sales)", head_role: "Head of Growth" }
+    - { code: CS, name: "Customer Success", head_role: "CS Lead" }
+    - { code: OPS, name: "Ops (HR + Finance + Legal)", head_role: "Head of Ops" }
+    - { code: BOD, name: "Founders", head_role: "CEO + CTO" }
+
+master_registry:
+  - { code: "SYS-00-MST-001", name: "Master Registry", owner: "Ops", required: true }
+  - { code: "ENG-ARCH-MST-001", name: "MASTER product architecture", owner: "CTO", required: true }
+  - { code: "ENG-INFRA-MST-001", name: "MASTER infrastructure (AWS resources)", owner: "DevOps Lead", required: true }
+  - { code: "ENG-SEC-MST-001", name: "MASTER security policies (SOC 2 controls)", owner: "Security Lead", required: true }
+  - { code: "ENG-INCIDENT-MST-001", name: "MASTER on-call rotation", owner: "Eng Manager", required: true }
+  - { code: "GTM-SALES-MST-001", name: "MASTER pricing & discount matrix", owner: "Sales Lead", required: true }
+  - { code: "GTM-CS-MST-001", name: "MASTER SLA & support tiers", owner: "CS Lead", required: true }
+  - { code: "GEN-HR-MST-001", name: "MASTER role ladder & compensation bands", owner: "Ops Lead", required: true }
+  - { code: "GEN-FIN-MST-001", name: "MASTER chart of accounts", owner: "Founders", required: true }
+  - { code: "BOD-STR-MST-001", name: "MASTER 3-year strategy", owner: "Founders", required: true }
+
+integrations:
+  contributor_group_email: "wiki@acme-cloud.com"
+  reviewer_bot_webhook: "https://open.larksuite.com/open-apis/bot/v2/hook/EXAMPLE-CLOUD"
+  reviewer_bot_name: "@acme-cloud-bot"
+  contributor_group_chat_id: "oc_EXAMPLE_CLOUD_CHAT"
+
+lark_bases:
+  - { name: "Engineering OKRs", base_token: "bascnCLOUD001", purpose: "Quarterly OKR per team" }
+  - { name: "Customer Pipeline", base_token: "bascnCLOUD002", purpose: "Sales pipeline + ARR tracking" }
+  - { name: "Incident Log", base_token: "bascnCLOUD003", purpose: "On-call incidents + postmortems" }
+  - { name: "Compliance Tracker", base_token: "bascnCLOUD004", purpose: "SOC 2 controls + audit trail" }
+  - { name: "Hiring Pipeline", base_token: "bascnCLOUD005", purpose: "Candidate tracking" }
+
+master_index_fields:
+  required:
+    - "Page Code"
+    - "Page Name"
+    - "Space"
+    - "Section"
+    - "Type"
+    - "Hub Parent"
+    - "Owner"
+    - "Reviewer"
+    - "Status"
+    - "Version"
+    - "Security Level"
+    - "Link"
+  recommended:
+    - "Source Type"
+    - "Source URL"
+    - "Effective Date"
+    - "Review Cadence"
+    - "Impacted Pages"
+
+policies:
+  page_status_values: ["⬜ Draft", "🔄 Active", "📋 Deprecated", "✅ Archived"]
+  default_status: "⬜ Draft"
+  publish_requires_review: true
+  review_quorum: 1
+  arc_append_only: true
+  no_renumber_on_rename: true
