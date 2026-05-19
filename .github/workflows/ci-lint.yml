@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Markdown lint
-        uses: DavidAnson/markdownlint-cli2-action@v16
+        uses: DavidAnson/markdownlint-cli2-action@v23
         with:
           globs: 'skills/**/*.md docs/**/*.md docs-meta/**/*.md README.md CONTRIBUTING.md SECURITY.md ROADMAP.md'
           continue-on-error: false
